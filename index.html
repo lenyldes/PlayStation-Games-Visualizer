@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlayStation Games Visualizer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>PlayStation Games Visualizer</h1>
+            <div class="loading" id="loading">Loading games...</div>
+        </header>
+
+        <div class="main-content">
+            <!-- Filter Panel -->
+            <aside class="filter-panel">
+                <div class="filter-section">
+                    <h3>Filters</h3>
+                    <button class="reset-btn" id="resetFilters">Reset All Filters</button>
+                </div>
+
+                <!-- Name Search -->
+                <div class="filter-section">
+                    <label for="nameSearch">Search by Name</label>
+                    <input type="text" id="nameSearch" placeholder="Search games...">
+                </div>
+
+                <!-- Price Range -->
+                <div class="filter-section">
+                    <label>Price Range (Rs)</label>
+                    <div class="range-inputs">
+                        <input type="number" id="priceMin" placeholder="Min" min="0">
+                        <span>to</span>
+                        <input type="number" id="priceMax" placeholder="Max" min="0">
+                    </div>
+                </div>
+
+                <!-- Discount Range -->
+                <div class="filter-section">
+                    <label>Discount Range (%)</label>
+                    <div class="range-inputs">
+                        <input type="number" id="discountMin" placeholder="Min" min="0" max="100">
+                        <span>to</span>
+                        <input type="number" id="discountMax" placeholder="Max" min="0" max="100">
+                    </div>
+                </div>
+
+                <!-- Product Type Filter -->
+                <div class="filter-section">
+                    <h4>Product Type</h4>
+                    <div id="productTypeFilters" class="checkbox-group"></div>
+                </div>
+
+                <!-- Voice Languages Filter -->
+                <div class="filter-section">
+                    <h4>Voice Languages</h4>
+                    <div id="voiceFilters" class="checkbox-group"></div>
+                </div>
+
+                <!-- Screen Languages Filter -->
+                <div class="filter-section">
+                    <h4>Screen Languages</h4>
+                    <div id="screenLanguagesFilters" class="checkbox-group"></div>
+                </div>
+
+                <!-- Sorting -->
+                <div class="filter-section">
+                    <label for="sortSelect">Sort by</label>
+                    <select id="sortSelect">
+                        <option value="name-asc">Name (A-Z)</option>
+                        <option value="name-desc">Name (Z-A)</option>
+                        <option value="price-asc">Price (Low to High)</option>
+                        <option value="price-desc">Price (High to Low)</option>
+                        <option value="discount-asc">Discount (Low to High)</option>
+                        <option value="discount-desc">Discount (High to Low)</option>
+                    </select>
+                </div>
+            </aside>
+
+            <!-- Main Content Area -->
+            <main class="content-area">
+                <div class="results-info">
+                    <span id="resultsCount">0 games found</span>
+                    <span id="currentPage">Page 1</span>
+                </div>
+
+                <div class="games-grid" id="gamesGrid">
+                    <!-- Games will be populated here -->
+                </div>
+
+                <div class="pagination" id="pagination">
+                    <!-- Pagination buttons will be generated here -->
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
