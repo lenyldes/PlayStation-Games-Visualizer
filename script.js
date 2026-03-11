@@ -18,7 +18,6 @@ class GamesVisualizer {
             screenLanguages: new Set()
         };
         this.sortState = 'name-asc';
-        this.loadedImages = new Set();
         
         this.init();
     }
@@ -348,14 +347,14 @@ class GamesVisualizer {
 
         let paginationHTML = '';
         
-        // First page
-        if (this.currentPage > 1) {
+        // First page (only show if not already showing page 1)
+        if (this.currentPage > 1 && this.currentPage > 3) {
             paginationHTML += `<button class="page-btn" onclick="visualizer.goToPage(1)">1</button>`;
-        }
-
-        // Ellipsis before current page
-        if (this.currentPage > 3) {
-            paginationHTML += `<span class="ellipsis">...</span>`;
+            
+            // Ellipsis before current page
+            if (this.currentPage > 4) {
+                paginationHTML += `<span class="ellipsis">...</span>`;
+            }
         }
 
         // Previous pages
@@ -372,12 +371,12 @@ class GamesVisualizer {
         }
 
         // Ellipsis after current page
-        if (this.currentPage < totalPages - 2) {
+        if (this.currentPage < totalPages - 3) {
             paginationHTML += `<span class="ellipsis">...</span>`;
         }
 
-        // Last page
-        if (this.currentPage < totalPages) {
+        // Last page (only show if not already showing last page)
+        if (this.currentPage < totalPages - 2) {
             paginationHTML += `<button class="page-btn" onclick="visualizer.goToPage(${totalPages})">${totalPages}</button>`;
         }
 
