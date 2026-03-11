@@ -24,10 +24,15 @@ class GamesVisualizer {
 
     // Initialize the application
     async init() {
+        console.log('🔧 PlayStation Games Visualizer initializing...');
+        console.log(`📊 Games per page: ${this.gamesPerPage}`);
+        
         this.bindEvents();
         await this.loadData();
         this.generateFilterOptions();
         this.applyFilters();
+        
+        console.log('✅ Application initialized successfully');
     }
 
     // Bind event listeners
@@ -75,6 +80,7 @@ class GamesVisualizer {
     // Load data from JSON file
     async loadData() {
         try {
+            console.log('📥 Loading games data from out.json...');
             const response = await fetch('out.json');
             if (!response.ok) {
                 throw new Error('Failed to load data');
@@ -83,10 +89,14 @@ class GamesVisualizer {
             const data = await response.json();
             this.games = data.map(game => this.processGameData(game));
             
+            console.log(`✅ Loaded ${this.games.length} games`);
+            console.log(`💰 Price range: Rs ${Math.min(...this.games.map(g => g.offerPrice))} - Rs ${Math.max(...this.games.map(g => g.offerPrice))}`);
+            console.log(`🎯 Discount range: ${Math.min(...this.games.map(g => g.discountPercent))}% - ${Math.max(...this.games.map(g => g.discountPercent))}%`);
+            
             // Hide loading indicator
             document.getElementById('loading').style.display = 'none';
         } catch (error) {
-            console.error('Error loading data:', error);
+            console.error('❌ Error loading data:', error);
             document.getElementById('loading').textContent = 'Error loading games data';
         }
     }
@@ -201,6 +211,8 @@ class GamesVisualizer {
 
     // Apply all filters and sorting
     applyFilters() {
+        const startTime = performance.now();
+        
         let filtered = this.games.filter(game => {
             // Name filter
             if (this.filterState.name && !game.name.toLowerCase().includes(this.filterState.name)) {
@@ -250,6 +262,21 @@ class GamesVisualizer {
         // Apply sorting
         filtered = this.sortGames(filtered);
         
+        const endTime = performance.now();
+        
+        console.log(`🔍 Filtering completed:`);
+        console.log(`   📊 Total games: ${this.games.length}`);
+        console.log(`   🎯 Filtered games: ${filtered.length}`);
+        console.log(`   ⚡ Processing time: ${(endTime - startTime).toFixed(2)}ms`);
+        console.log(`   🎚️  Active filters:`);
+        console.log(`      - Name search: "${this.filterState.name}"`);
+        console.log(`      - Price range: ${this.filterState.priceMin || 'min'} - ${this.filterState.priceMax || 'max'}`);
+        console.log(`      - Discount range: ${this.filterState.discountMin || 'min'}% - ${this.filterState.discountMax || 'max'}%`);
+        console.log(`      - Product types: ${Array.from(this.filterState.productTypes).length} selected`);
+        console.log(`      - Voice languages: ${Array.from(this.filterState.voices).length} selected`);
+        console.log(`      - Screen languages: ${Array.from(this.filterState.screenLanguages).length} selected`);
+        console.log(`      - Sorting: ${this.sortState}`);
+        
         this.filteredGames = filtered;
         this.currentPage = 1;
         this.renderGames();
@@ -286,6 +313,10 @@ class GamesVisualizer {
         const gamesToShow = this.filteredGames.slice(startIndex, endIndex);
 
         gamesGrid.innerHTML = '';
+
+        console.log(`🔄 Rendering page ${this.currentPage}:`);
+        console.log(`   📄 Showing games ${startIndex + 1}-${Math.min(endIndex, this.filteredGames.length)} of ${this.filteredGames.length}`);
+        console.log(`   🎮 Games on this page: ${gamesToShow.length}`);
 
         gamesToShow.forEach(game => {
             const gameCard = this.createGameCard(game);
@@ -330,6 +361,7 @@ class GamesVisualizer {
 
     // Retry image loading
     retryImageLoad(imgElement, imgURL) {
+        console.log(`🖼️  Retrying image load: ${imgURL}`);
         imgElement.src = imgURL;
         imgElement.style.display = 'block';
         imgElement.nextElementSibling.style.display = 'none';
@@ -385,6 +417,7 @@ class GamesVisualizer {
 
     // Navigate to specific page
     goToPage(page) {
+        console.log(`📄 Navigating to page ${page}`);
         this.currentPage = page;
         this.renderGames();
         this.updateResultsInfo();
@@ -406,6 +439,8 @@ class GamesVisualizer {
 
     // Reset all filters
     resetFilters() {
+        console.log('🔄 Resetting all filters');
+        
         // Reset filter state
         this.filterState = {
             name: '',
@@ -439,5 +474,20 @@ class GamesVisualizer {
 // Initialize the visualizer when the page loads
 let visualizer;
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('🚀 PlayStation Games Visualizer starting...');
+    console.log('🌐 User agent:', navigator.userAgent);
+    console.log('💻 Screen size:', `${screen.width}x${screen.height}`);
+    console.log('🖥️  Viewport size:', `${window.innerWidth}x${window.innerHeight}`);
+    
     visualizer = new GamesVisualizer();
+});
+
+// Add error handling for uncaught errors
+window.addEventListener('error', (event) => {
+    console.error('❌ Uncaught error:', event.error);
+});
+
+// Log when page is unloaded
+window.addEventListener('beforeunload', () => {
+    console.log('👋 PlayStation Games Visualizer closing...');
 });
