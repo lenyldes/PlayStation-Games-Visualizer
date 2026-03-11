@@ -318,7 +318,7 @@ class GamesVisualizer {
                 <div class="game-price">
                     <span class="current-price">Rs ${game.offerPrice.toLocaleString()}</span>
                     ${game.originalPrice > game.offerPrice ? 
-                        `<span class="original-price">~~Rs ${game.originalPrice.toLocaleString()}~~</span>` : ''}
+                        `<span class="original-price">Rs ${game.originalPrice.toLocaleString()}</span>` : ''}
                     ${game.discountPercent > 0 ? 
                         `<span class="discount-percent">Save ${game.discountPercent}%</span>` : ''}
                 </div>
